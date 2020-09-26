@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -145,6 +146,88 @@ public class UniverseTest {
         StarSystem end = universe.getStarSystem("Sirius");
         assertEquals(9, universe.getDurationShortestRoute(start, end));
 
+    }
+
+    @Test
+    public void exercise_9_shortestRouteAlphaCentauri(){
+        StarSystem system = universe.getStarSystem("Alpha Centauri");
+        assertEquals(9, universe.getDurationShortestRoute(system, system));
+    }
+
+    @Test
+    public void exercise_10_travelTimeLess30(){
+        StarSystem system = universe.getStarSystem("Sirius");
+
+        List<StarSystem[]> expectedResult = new ArrayList<>();
+
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+
+        List<StarSystem[]> actualResult = universe.getTravelTimeMaxLimit(system, system,30);
+        assertEquals(expectedResult.size(), actualResult.size());
+        for(StarSystem[] expectedElement: expectedResult){
+            assertTrue(hasComparableArray(expectedElement, actualResult));
+        }
+    }
+
+    private boolean hasComparableArray(StarSystem[] expectedElement, List<StarSystem[]> searchList) {
+        for(StarSystem[] search: searchList){
+            if(Arrays.equals(search, expectedElement)) return true;
+        }
+        return false;
     }
 
 }

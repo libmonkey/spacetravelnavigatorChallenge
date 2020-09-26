@@ -152,4 +152,17 @@ public class Universe {
 
         return shortestTravelTime;
     }
+
+    public List<StarSystem[]> getTravelTimeMaxLimit(StarSystem start, StarSystem end, Integer maximumTravelTime) {
+        StarRoute routeWish = new StarRoute(start, end, 13);
+        List<StarSystem[]> result = new ArrayList<>();
+        List<StarRoute> results = recursiveRouteSearch(routeWish);
+
+        for(StarRoute route : results){
+            if(route.getTravelTimeOfRoute() < maximumTravelTime) {
+                result.add(route.getTraveledSystems());
+            }
+        }
+        return result;
+    }
 }

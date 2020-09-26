@@ -1,6 +1,7 @@
 package system;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StarSystem {
@@ -13,8 +14,8 @@ public class StarSystem {
     public StarSystem(String systemName, String shortcut) {
         this.systemName = systemName;
         this.shortcut = shortcut;
-        this.ramps = new ArrayList<SpaceHighway>();
-        this.exits = new ArrayList<SpaceHighway>();
+        this.ramps = new ArrayList<>();
+        this.exits = new ArrayList<>();
     }
 
     public void addExit(SpaceHighway exit) {
@@ -71,5 +72,13 @@ public class StarSystem {
         result = 31 * result + ramps.hashCode();
         result = 31 * result + exits.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return "Star System: " +
+                systemName +
+                " Shortcut: " +
+                shortcut;
     }
 }
