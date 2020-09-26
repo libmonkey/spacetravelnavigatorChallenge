@@ -1,14 +1,14 @@
 package system;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class Universe {
 
     private List<StarSystem> starSystems;
 
     public Universe() {
-        this.starSystems = new ArrayList<StarSystem>();
+        this.starSystems = new ArrayList<>();
     }
 
     public boolean addStarSystem(StarSystem system) {
@@ -43,21 +43,19 @@ public class Universe {
         }
     }
 
-    //TODO: Return ShortestRout Names
+    //TODO: Return ShortestRoute Names
     private Integer getNextHighway(StarSystem[] travelPoints, Integer nextPoint, Integer travelTime) throws Exception {
         if(travelPoints.length > nextPoint){
             List<SpaceHighway> highways = travelPoints[nextPoint-1].getRamps();
-            if(highways.isEmpty()){
-                throw new Exception("NO SUCH ROUTE");
-            } else {
-                for(SpaceHighway highway : highways) {
+            if (!highways.isEmpty()) {
+                for (SpaceHighway highway : highways) {
                     StarSystem exitPoint = highway.getExit();
-                    if(exitPoint.equals(travelPoints[nextPoint])){
+                    if (exitPoint.equals(travelPoints[nextPoint])) {
                         return getNextHighway(travelPoints, nextPoint + 1, travelTime + highway.getTravelTime());
                     }
                 }
-                throw new Exception("NO SUCH ROUTE");
             }
+            throw new Exception("NO SUCH ROUTE");
         }
         return travelTime;
     }
@@ -85,5 +83,73 @@ public class Universe {
         buildHighway(2, "C", "E");
         buildHighway(3, "E", "B");
         buildHighway(7, "A", "E");
+    }
+
+    public List<StarSystem[]> getRoutsWithMaxStops(StarSystem start, StarSystem end, Integer maxPoints ) {
+        StarRoute route = new StarRoute(start, end, maxPoints);
+
+        List<StarRoute> results = recursiveRouteSearch(route);
+
+        return getStarSystemsFromRoutes(results);
+    }
+
+    public List<StarSystem[]> getRoutsWithExactlyStops(StarSystem start, StarSystem end, Integer exactly ) {
+        StarRoute route = new StarRoute(start, end, 6);
+        List<StarRoute> results = recursiveRouteSearch(route);
+
+        results = removeRoutesNotExactly(results, exactly);
+
+        return getStarSystemsFromRoutes(results);
+    }
+
+    private List<StarRoute> recursiveRouteSearch(StarRoute route) {
+        List<StarRoute> results = new ArrayList<>();
+        if(route.isStarSystemHopPossible()) {
+            for (SpaceHighway highway : route.getNextSystem().getRamps()) {
+                if (!SpaceHighway.isNull(highway)) {
+                    StarRoute newPath = route.copyRoute();
+                    newPath.addRoutePoint(highway);
+
+                    if (highway.getExit().equals(route.getLastSystem())) {
+                        results.add(newPath);
+                    }
+
+                    results.addAll(recursiveRouteSearch(newPath));
+                }
+            }
+        }
+        return results;
+    }
+
+    private List<StarSystem[]> getStarSystemsFromRoutes(List<StarRoute> routes ) {
+        List<StarSystem[]> result = new ArrayList<>();
+
+        for(StarRoute route : routes) {
+            result.add(route.getTraveledSystems());
+        }
+        return result;
+    }
+
+    private List<StarRoute> removeRoutesNotExactly(List<StarRoute> routes, Integer exactly) {
+        List<StarRoute> rightDistance = new ArrayList<>();
+        for(StarRoute route : routes){
+            if(route.getSystemsInBetween().length == exactly){
+                rightDistance.add(route);
+            }
+        }
+        return rightDistance;
+    }
+
+    public int getDurationShortestRoute(StarSystem start, StarSystem end) {
+        StarRoute routeWish = new StarRoute(start, end);
+        List<StarRoute> results = recursiveRouteSearch(routeWish);
+
+        Integer shortestTravelTime = Integer.MAX_VALUE;
+        for(StarRoute route : results){
+            Integer travelTime = route.getTravelTimeOfRoute();
+            if(shortestTravelTime > travelTime) shortestTravelTime = travelTime;
+        }
+
+        return shortestTravelTime;
     }
 }

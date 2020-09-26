@@ -2,7 +2,6 @@ package system;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +19,7 @@ public class UniverseTest {
     }
 
     @Test
-    public void travelTestSolarSystemAlphaCentauriSirius(){
+    public void exercise_1_travelTestSolarSystemAlphaCentauriSirius(){
         StarSystem[] travelRoute = {
                 universe.getStarSystem("A"),
                 universe.getStarSystem("B"),
@@ -31,7 +30,7 @@ public class UniverseTest {
     }
 
     @Test
-    public void travelTestSolarSystemBetelgeuse(){
+    public void exercise_2_travelTestSolarSystemBetelgeuse(){
         StarSystem[] travelRoute = {
                 universe.getStarSystem("Solar System"),
                 universe.getStarSystem("Betelgeuse")
@@ -41,7 +40,7 @@ public class UniverseTest {
     }
 
     @Test
-    public void travelTestSolarSystemBetelgeuseSirius(){
+    public void exercise_3_travelTestSolarSystemBetelgeuseSirius(){
         StarSystem[] travelRoute = {
                 universe.getStarSystem("Solar System"),
                 universe.getStarSystem("Betelgeuse"),
@@ -51,7 +50,7 @@ public class UniverseTest {
     }
 
     @Test
-    public void travelTestSolarSystemVegaAlphaCentauriSiriusBetelgeuse(){
+    public void exercise_4_travelTestSolarSystemVegaAlphaCentauriSiriusBetelgeuse(){
         StarSystem[] travelRoute = {
                 universe.getStarSystem("Solar System"),
                 universe.getStarSystem("Vega"),
@@ -63,7 +62,7 @@ public class UniverseTest {
     }
 
     @Test
-    public void travelTestSolarSystemVegaBetelgeuse(){
+    public void exercise_5_travelTestSolarSystemVegaBetelgeuse(){
         StarSystem[] travelRoute = {
                 universe.getStarSystem("Solar System"),
                 universe.getStarSystem("Vega"),
@@ -73,26 +72,79 @@ public class UniverseTest {
     }
 
     @Test
-    public void allRouteSiriusSirius(){
-        StarSystem[] travelRoute = {
-                universe.getStarSystem("Sirius"),
-                universe.getStarSystem("Sirius")
-        };
-        List expectedResult = Arrays.asList(new StarSystem[]{
+    public void exercise_6_allRouteSiriusSirius(){
+        StarSystem start = universe.getStarSystem("Sirius");
+        StarSystem end = universe.getStarSystem("Sirius");
+
+        List<StarSystem[]> expectedResult = new ArrayList<>();
+
+        expectedResult.add(new StarSystem[] {
                 universe.getStarSystem("Sirius"),
                 universe.getStarSystem("Betelgeuse"),
                 universe.getStarSystem("Sirius")
-                },
-                new StarSystem[]{
-                        universe.getStarSystem("Sirius"),
-                        universe.getStarSystem("Vega"),
-                        universe.getStarSystem("Alpha Centauri"),
-                        universe.getStarSystem("Sirius")
-                }
-        );
-        List actualResult = universe.getRoutsWithMaxStops(universe.getStarSystem("Sirius"), universe.getStarSystem("Sirius"), 3);
-        assertEquals();
-        
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+
+        List<StarSystem[]> actualResult = universe.getRoutsWithMaxStops(start, end, 3);
+        assertEquals(expectedResult.size(), actualResult.size());
+        if(actualResult.size() > 0) {
+            for (Integer i = 0; i < expectedResult.size(); i++) {
+                assertArrayEquals(expectedResult.get(i), actualResult.get(i));
+            }
+        }
+    }
+
+    @Test
+    public void exercise_7_getDurationOfShortestRouteSolarSystemSirius(){
+        StarSystem start = universe.getStarSystem("Solar System");
+        StarSystem end = universe.getStarSystem("Sirius");
+        StarRoute routeWish = new StarRoute(start, end, 3);
+
+        List<StarSystem[]> expectedResult = new ArrayList<>();
+
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Solar System"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Solar System"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Sirius")
+        });
+        expectedResult.add(new StarSystem[]{
+                universe.getStarSystem("Solar System"),
+                universe.getStarSystem("Betelgeuse"),
+                universe.getStarSystem("Vega"),
+                universe.getStarSystem("Alpha Centauri"),
+                universe.getStarSystem("Sirius")
+        });
+
+        List<StarSystem[]> actualResult = universe.getRoutsWithExactlyStops(start, end, 3);
+        assertEquals(expectedResult.size(), actualResult.size());
+        if(actualResult.size() > 0) {
+            for (Integer i = 0; i < expectedResult.size(); i++) {
+                assertArrayEquals(expectedResult.get(i), actualResult.get(i));
+            }
+        }
+
+    }
+
+    @Test
+    public void exercise_8_shortestRouteSolarSystemSirius(){
+        StarSystem start = universe.getStarSystem("Solar System");
+        StarSystem end = universe.getStarSystem("Sirius");
+        assertEquals(9, universe.getDurationShortestRoute(start, end));
+
     }
 
 }

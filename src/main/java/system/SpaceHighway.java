@@ -33,4 +33,8 @@ public class SpaceHighway {
     public StarSystem getExit() {
         return exit;
     }
+
+    public static Boolean isNull(SpaceHighway highway){
+        return highway == null;
+    }
 }
