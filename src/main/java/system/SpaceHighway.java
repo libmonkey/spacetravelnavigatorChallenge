@@ -6,10 +6,10 @@ public class SpaceHighway {
     private StarSystem exit;
 
     /**
-     *
-     * @param travelTime
-     * @param ramp
-     * @param exit
+     * Constructor for SpaceHighway.
+     * @param travelTime time between ramp and exit.
+     * @param ramp StarSystem where highway starts
+     * @param exit StarSystem where highway ends
      */
     public SpaceHighway(Integer travelTime, StarSystem ramp, StarSystem exit){
         if(ramp.equals(exit)) {
@@ -34,6 +34,11 @@ public class SpaceHighway {
         return exit;
     }
 
+    /**
+     * Check if given Object is null
+     * @param highway that is to be checked
+     * @return True if Object is null
+     */
     public static Boolean isNull(SpaceHighway highway){
         return highway == null;
     }
