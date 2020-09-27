@@ -1,7 +1,6 @@
 package system;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Universe {
 
@@ -48,28 +47,16 @@ public class Universe {
         return null;
     }
 
-    public String getTravelTimeOfRoute(StarSystem[] travelPoints) {
-        try {
-            return getNextHighway(travelPoints, 1, 0).toString();
-        } catch (Exception e) {
-            return e.getMessage();
+    public String getDistanceOfRoute(StarSystem[] spaceRoute){
+        StarRoute route = new StarRoute(spaceRoute[0], spaceRoute[spaceRoute.length -1], spaceRoute.length - 1);
+        int currentSystem = 0;
+        while(currentSystem + 1 < spaceRoute.length) {
+            SpaceHighway highway = spaceRoute[currentSystem].getHighwayToStarSystem(spaceRoute[currentSystem + 1]);
+            if(SpaceHighway.isNull(highway)) return "NO SUCH ROUTE";
+            else route.addRoutePoint(highway);
+            currentSystem++;
         }
-    }
-
-    private Integer getNextHighway(StarSystem[] travelPoints, Integer nextPoint, Integer travelTime) throws Exception {
-        if(travelPoints.length > nextPoint){
-            List<SpaceHighway> highways = travelPoints[nextPoint-1].getRamps();
-            if (!highways.isEmpty()) {
-                for (SpaceHighway highway : highways) {
-                    StarSystem exitPoint = highway.getExit();
-                    if (exitPoint.equals(travelPoints[nextPoint])) {
-                        return getNextHighway(travelPoints, nextPoint + 1, travelTime + highway.getTravelTime());
-                    }
-                }
-            }
-            throw new Exception("NO SUCH ROUTE");
-        }
-        return travelTime;
+        return route.getTravelTimeOfRoute().toString();
     }
 
     public List<StarSystem[]> getRoutsWithMaxStops(StarSystem start, StarSystem end, Integer maxPoints ) {
@@ -93,7 +80,7 @@ public class Universe {
         StarRoute routeWish = new StarRoute(start, end);
         List<StarRoute> results = recursiveRouteSearch(routeWish);
 
-        Integer shortestTravelTime = Integer.MAX_VALUE;
+        int shortestTravelTime = Integer.MAX_VALUE;
         for(StarRoute route : results){
             Integer travelTime = route.getTravelTimeOfRoute();
             if(shortestTravelTime > travelTime) shortestTravelTime = travelTime;

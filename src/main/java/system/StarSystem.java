@@ -36,14 +36,12 @@ public class StarSystem {
 
     /**
      * Checks if star system is connected to highway and removes ramp or exit.
-     * @param highway
+     * @param highway that is to be removed from ramps or exit
      * @return highway was removed
      */
     public boolean removeHighway(SpaceHighway highway){
         if(ramps.remove(highway)) return true;
-        if(exits.remove(highway)) return true;
-
-        return false;
+        return exits.remove(highway);
     }
 
     public List<SpaceHighway> getRamps() {
@@ -80,5 +78,12 @@ public class StarSystem {
                 systemName +
                 " Shortcut: " +
                 shortcut;
+    }
+
+    public SpaceHighway getHighwayToStarSystem(StarSystem goal){
+        for(SpaceHighway highway : getRamps()){
+            if(highway.getExit().equals(goal)) return highway;
+        }
+        return null;
     }
 }

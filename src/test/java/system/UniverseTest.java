@@ -26,7 +26,7 @@ public class UniverseTest {
                 universe.getStarSystem("C")
         };
 
-        assertEquals("9", universe.getTravelTimeOfRoute(travelRoute));
+        assertEquals("9", universe.getDistanceOfRoute(travelRoute));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class UniverseTest {
                 universe.getStarSystem("Betelgeuse")
         };
 
-        assertEquals("5", universe.getTravelTimeOfRoute(travelRoute));
+        assertEquals("5", universe.getDistanceOfRoute(travelRoute));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class UniverseTest {
                 universe.getStarSystem("Betelgeuse"),
                 universe.getStarSystem("Sirius")
         };
-        assertEquals("13", universe.getTravelTimeOfRoute(travelRoute));
+        assertEquals("13", universe.getDistanceOfRoute(travelRoute));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UniverseTest {
                 universe.getStarSystem("Sirius"),
                 universe.getStarSystem("Betelgeuse")
         };
-        assertEquals("22", universe.getTravelTimeOfRoute(travelRoute));
+        assertEquals("22", universe.getDistanceOfRoute(travelRoute));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UniverseTest {
                 universe.getStarSystem("Vega"),
                 universe.getStarSystem("Betelgeuse")
         };
-        assertEquals("NO SUCH ROUTE", universe.getTravelTimeOfRoute(travelRoute));
+        assertEquals("NO SUCH ROUTE", universe.getDistanceOfRoute(travelRoute));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class UniverseTest {
         List<StarSystem[]> actualResult = universe.getRoutsWithMaxStops(start, end, 3);
         assertEquals(expectedResult.size(), actualResult.size());
         if(actualResult.size() > 0) {
-            for (Integer i = 0; i < expectedResult.size(); i++) {
+            for (int i = 0; i < expectedResult.size(); i++) {
                 assertArrayEquals(expectedResult.get(i), actualResult.get(i));
             }
         }
@@ -132,7 +132,7 @@ public class UniverseTest {
         List<StarSystem[]> actualResult = universe.getRoutsWithExactlyStops(start, end, 3);
         assertEquals(expectedResult.size(), actualResult.size());
         if(actualResult.size() > 0) {
-            for (Integer i = 0; i < expectedResult.size(); i++) {
+            for (int i = 0; i < expectedResult.size(); i++) {
                 assertArrayEquals(expectedResult.get(i), actualResult.get(i));
             }
         }
