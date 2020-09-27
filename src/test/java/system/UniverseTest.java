@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -16,7 +15,7 @@ public class UniverseTest {
     @Before
     public void buildUniverse(){
         universe = new Universe();
-        universe.createTestWorld();
+        universe.createDummyUniverse();
     }
 
     @Test

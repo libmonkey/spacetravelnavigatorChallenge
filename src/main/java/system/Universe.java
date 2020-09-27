@@ -7,10 +7,18 @@ public class Universe {
 
     private List<StarSystem> starSystems;
 
+    /**
+     * Constructor that creates an empty universe.
+     */
     public Universe() {
         this.starSystems = new ArrayList<>();
     }
 
+    /**
+     * Add StarSystem to Universe.
+     * @param system new StarSystem
+     * @return true if new StarSystem was successfully added
+     */
     public boolean addStarSystem(StarSystem system) {
         if(getStarSystem(system.getShortcut()) != null) {
             return false;
@@ -19,6 +27,11 @@ public class Universe {
         return true;
     }
 
+    /**
+     * Removes a StarSystem from Universe.
+     * @param system that should be removed
+     * @return True if StarSystem was successfully removed
+     */
     public boolean removeStarSystem(StarSystem system) {
         return starSystems.remove(system);
     }
@@ -43,7 +56,6 @@ public class Universe {
         }
     }
 
-    //TODO: Return ShortestRoute Names
     private Integer getNextHighway(StarSystem[] travelPoints, Integer nextPoint, Integer travelTime) throws Exception {
         if(travelPoints.length > nextPoint){
             List<SpaceHighway> highways = travelPoints[nextPoint-1].getRamps();
@@ -58,31 +70,6 @@ public class Universe {
             throw new Exception("NO SUCH ROUTE");
         }
         return travelTime;
-    }
-
-    public void createTestWorld(){
-        populateUniverse();
-        buildHighways();
-    }
-
-    private void populateUniverse() {
-        addStarSystem(new StarSystem("Solar System", "A"));
-        addStarSystem(new StarSystem("Alpha Centauri", "B"));
-        addStarSystem(new StarSystem("Sirius", "C"));
-        addStarSystem(new StarSystem("Betelgeuse", "D"));
-        addStarSystem(new StarSystem("Vega", "E"));
-    }
-
-    private void buildHighways() {
-        buildHighway(5, "A", "B");
-        buildHighway(4, "B", "C");
-        buildHighway(8, "C", "D");
-        buildHighway(8, "D", "C");
-        buildHighway(6, "D", "E");
-        buildHighway(5, "A", "D");
-        buildHighway(2, "C", "E");
-        buildHighway(3, "E", "B");
-        buildHighway(7, "A", "E");
     }
 
     public List<StarSystem[]> getRoutsWithMaxStops(StarSystem start, StarSystem end, Integer maxPoints ) {
@@ -101,6 +88,42 @@ public class Universe {
 
         return getStarSystemsFromRoutes(results);
     }
+
+    public int getDurationShortestRoute(StarSystem start, StarSystem end) {
+        StarRoute routeWish = new StarRoute(start, end);
+        List<StarRoute> results = recursiveRouteSearch(routeWish);
+
+        Integer shortestTravelTime = Integer.MAX_VALUE;
+        for(StarRoute route : results){
+            Integer travelTime = route.getTravelTimeOfRoute();
+            if(shortestTravelTime > travelTime) shortestTravelTime = travelTime;
+        }
+
+        return shortestTravelTime;
+    }
+
+    public List<StarSystem[]> getTravelTimeMaxLimit(StarSystem start, StarSystem end, Integer maximumTravelTime) {
+        StarRoute routeWish = new StarRoute(start, end, 13);
+        List<StarSystem[]> result = new ArrayList<>();
+        List<StarRoute> results = recursiveRouteSearch(routeWish);
+
+        for(StarRoute route : results){
+            if(route.getTravelTimeOfRoute() < maximumTravelTime) {
+                result.add(route.getTraveledSystems());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Create universe with dummy data.
+     */
+    public void createDummyUniverse(){
+        populateUniverse();
+        buildHighways();
+    }
+
+    // Private methods ---------------------------------------------------------------------------------------------
 
     private List<StarRoute> recursiveRouteSearch(StarRoute route) {
         List<StarRoute> results = new ArrayList<>();
@@ -140,29 +163,23 @@ public class Universe {
         return rightDistance;
     }
 
-    public int getDurationShortestRoute(StarSystem start, StarSystem end) {
-        StarRoute routeWish = new StarRoute(start, end);
-        List<StarRoute> results = recursiveRouteSearch(routeWish);
-
-        Integer shortestTravelTime = Integer.MAX_VALUE;
-        for(StarRoute route : results){
-            Integer travelTime = route.getTravelTimeOfRoute();
-            if(shortestTravelTime > travelTime) shortestTravelTime = travelTime;
-        }
-
-        return shortestTravelTime;
+    private void populateUniverse() {
+        addStarSystem(new StarSystem("Solar System", "A"));
+        addStarSystem(new StarSystem("Alpha Centauri", "B"));
+        addStarSystem(new StarSystem("Sirius", "C"));
+        addStarSystem(new StarSystem("Betelgeuse", "D"));
+        addStarSystem(new StarSystem("Vega", "E"));
     }
 
-    public List<StarSystem[]> getTravelTimeMaxLimit(StarSystem start, StarSystem end, Integer maximumTravelTime) {
-        StarRoute routeWish = new StarRoute(start, end, 13);
-        List<StarSystem[]> result = new ArrayList<>();
-        List<StarRoute> results = recursiveRouteSearch(routeWish);
-
-        for(StarRoute route : results){
-            if(route.getTravelTimeOfRoute() < maximumTravelTime) {
-                result.add(route.getTraveledSystems());
-            }
-        }
-        return result;
+    private void buildHighways() {
+        buildHighway(5, "A", "B");
+        buildHighway(4, "B", "C");
+        buildHighway(8, "C", "D");
+        buildHighway(8, "D", "C");
+        buildHighway(6, "D", "E");
+        buildHighway(5, "A", "D");
+        buildHighway(2, "C", "E");
+        buildHighway(3, "E", "B");
+        buildHighway(7, "A", "E");
     }
 }
