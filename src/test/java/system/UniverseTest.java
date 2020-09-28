@@ -103,7 +103,6 @@ public class UniverseTest {
     public void exercise_7_getDurationOfShortestRouteSolarSystemSirius(){
         StarSystem start = universe.getStarSystem("Solar System");
         StarSystem end = universe.getStarSystem("Sirius");
-        StarRoute routeWish = new StarRoute(start, end, 3);
 
         List<StarSystem[]> expectedResult = new ArrayList<>();
 
