@@ -40,11 +40,11 @@ public class Universe {
     }
 
     /**
-     * Returns Distance of given travel route.
+     * Returns duration of given travel route.
      * @param spaceRoute Array of StarSystems that are traveled
      * @return travel time as string
      */
-    public String getDistanceOfRoute(StarSystem[] spaceRoute){
+    public String getDurationOfRoute(StarSystem[] spaceRoute){
         StarRoute route = new StarRoute(spaceRoute[0], spaceRoute[spaceRoute.length -1], spaceRoute.length - 1);
         int currentSystem = 0;
         while(currentSystem + 1 < spaceRoute.length) {
@@ -82,7 +82,7 @@ public class Universe {
         StarRoute route = new StarRoute(start, end, 6);
         List<StarRoute> results = recursiveRouteSearch(route);
 
-        results = removeRoutesNotExactly(results, exactly);
+        results = removeRoutesNotExactStops(results, exactly);
 
         return getStarSystemsFromRoutes(results);
     }
@@ -110,16 +110,16 @@ public class Universe {
      * Return all routes that takes less than given time.
      * @param start route starts here
      * @param end route should end here
-     * @param maximumTravelTime limit of maximum travel time
+     * @param maximumDuration limit of maximum travel time
      * @return List of routes
      */
-    public List<StarSystem[]> getTravelTimeMaxLimit(StarSystem start, StarSystem end, Integer maximumTravelTime) {
+    public List<StarSystem[]> getRoutesWithDurationMaxLimit(StarSystem start, StarSystem end, Integer maximumDuration) {
         StarRoute routeWish = new StarRoute(start, end, 13);
         List<StarSystem[]> result = new ArrayList<>();
         List<StarRoute> results = recursiveRouteSearch(routeWish);
 
         for(StarRoute route : results){
-            if(route.getTravelTimeOfRoute() < maximumTravelTime) {
+            if(route.getTravelTimeOfRoute() < maximumDuration) {
                 result.add(route.getTraveledSystems());
             }
         }
@@ -164,7 +164,7 @@ public class Universe {
         return result;
     }
 
-    private List<StarRoute> removeRoutesNotExactly(List<StarRoute> routes, Integer exactly) {
+    private List<StarRoute> removeRoutesNotExactStops(List<StarRoute> routes, Integer exactly) {
         List<StarRoute> rightDistance = new ArrayList<>();
         for(StarRoute route : routes){
             if(route.getSystemsInBetween().length == exactly){

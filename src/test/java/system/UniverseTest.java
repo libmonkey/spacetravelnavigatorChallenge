@@ -26,7 +26,7 @@ public class UniverseTest {
                 universe.getStarSystem("C")
         };
 
-        assertEquals("9", universe.getDistanceOfRoute(travelRoute));
+        assertEquals("9", universe.getDurationOfRoute(travelRoute));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class UniverseTest {
                 universe.getStarSystem("Betelgeuse")
         };
 
-        assertEquals("5", universe.getDistanceOfRoute(travelRoute));
+        assertEquals("5", universe.getDurationOfRoute(travelRoute));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class UniverseTest {
                 universe.getStarSystem("Betelgeuse"),
                 universe.getStarSystem("Sirius")
         };
-        assertEquals("13", universe.getDistanceOfRoute(travelRoute));
+        assertEquals("13", universe.getDurationOfRoute(travelRoute));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UniverseTest {
                 universe.getStarSystem("Sirius"),
                 universe.getStarSystem("Betelgeuse")
         };
-        assertEquals("22", universe.getDistanceOfRoute(travelRoute));
+        assertEquals("22", universe.getDurationOfRoute(travelRoute));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UniverseTest {
                 universe.getStarSystem("Vega"),
                 universe.getStarSystem("Betelgeuse")
         };
-        assertEquals("NO SUCH ROUTE", universe.getDistanceOfRoute(travelRoute));
+        assertEquals("NO SUCH ROUTE", universe.getDurationOfRoute(travelRoute));
     }
 
     @Test
@@ -215,7 +215,7 @@ public class UniverseTest {
                 universe.getStarSystem("Sirius")
         });
 
-        List<StarSystem[]> actualResult = universe.getTravelTimeMaxLimit(system, system,30);
+        List<StarSystem[]> actualResult = universe.getRoutesWithDurationMaxLimit(system, system,30);
         assertEquals(expectedResult.size(), actualResult.size());
         for(StarSystem[] expectedElement: expectedResult){
             assertTrue(hasComparableArray(expectedElement, actualResult));
