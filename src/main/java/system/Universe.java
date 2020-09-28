@@ -18,7 +18,7 @@ public class Universe {
      * @param system new StarSystem
      * @return true if new StarSystem was successfully added
      */
-    public boolean addStarSystem(StarSystem system) {
+    private boolean addStarSystem(StarSystem system) {
         if(getStarSystem(system.getShortcut()) != null) {
             return false;
         }
@@ -27,18 +27,10 @@ public class Universe {
     }
 
     /**
-     * Removes a StarSystem from Universe.
-     * @param system that should be removed
-     * @return True if StarSystem was successfully removed
+     * Return StarSystem with given name or shortcut.
+     * @param searchString name or shortcut of System
+     * @return StarSystem or null
      */
-    public boolean removeStarSystem(StarSystem system) {
-        return starSystems.remove(system);
-    }
-
-    public SpaceHighway buildHighway(Integer travelTime, String rampShortcut, String exitShortcut) {
-        return new SpaceHighway(travelTime, getStarSystem(rampShortcut), getStarSystem(exitShortcut));
-    }
-
     public StarSystem getStarSystem(String searchString){
         for(StarSystem system : starSystems) {
             if(system.getSystemName().equals(searchString)) return system;
@@ -47,6 +39,11 @@ public class Universe {
         return null;
     }
 
+    /**
+     * Returns Distance of given travel route.
+     * @param spaceRoute Array of StarSystems that are traveled
+     * @return travel time as string
+     */
     public String getDistanceOfRoute(StarSystem[] spaceRoute){
         StarRoute route = new StarRoute(spaceRoute[0], spaceRoute[spaceRoute.length -1], spaceRoute.length - 1);
         int currentSystem = 0;
@@ -59,6 +56,13 @@ public class Universe {
         return route.getTravelTimeOfRoute().toString();
     }
 
+    /**
+     * Returns all routes from start to end with equals or less highways.
+     * @param start route starts here
+     * @param end route should end here
+     * @param maxPoints allowed maximum of used highways
+     * @return List of Routes
+     */
     public List<StarSystem[]> getRoutsWithMaxStops(StarSystem start, StarSystem end, Integer maxPoints ) {
         StarRoute route = new StarRoute(start, end, maxPoints);
 
@@ -67,6 +71,13 @@ public class Universe {
         return getStarSystemsFromRoutes(results);
     }
 
+    /**
+     * Returns all routes of given start to end with exactly number of used highways.
+     * @param start route starts here
+     * @param end route should end here
+     * @param exactly allowed number of highways
+     * @return List of routes
+     */
     public List<StarSystem[]> getRoutsWithExactlyStops(StarSystem start, StarSystem end, Integer exactly ) {
         StarRoute route = new StarRoute(start, end, 6);
         List<StarRoute> results = recursiveRouteSearch(route);
@@ -76,6 +87,12 @@ public class Universe {
         return getStarSystemsFromRoutes(results);
     }
 
+    /**
+     * Return the duration of the shortest route from start to end.
+     * @param start route starts here
+     * @param end route should end here
+     * @return List of routes
+     */
     public int getDurationShortestRoute(StarSystem start, StarSystem end) {
         StarRoute routeWish = new StarRoute(start, end);
         List<StarRoute> results = recursiveRouteSearch(routeWish);
@@ -89,6 +106,13 @@ public class Universe {
         return shortestTravelTime;
     }
 
+    /**
+     * Return all routes that takes less than given time.
+     * @param start route starts here
+     * @param end route should end here
+     * @param maximumTravelTime limit of maximum travel time
+     * @return List of routes
+     */
     public List<StarSystem[]> getTravelTimeMaxLimit(StarSystem start, StarSystem end, Integer maximumTravelTime) {
         StarRoute routeWish = new StarRoute(start, end, 13);
         List<StarSystem[]> result = new ArrayList<>();
@@ -148,6 +172,10 @@ public class Universe {
             }
         }
         return rightDistance;
+    }
+
+    private SpaceHighway buildHighway(Integer travelTime, String rampShortcut, String exitShortcut) {
+        return new SpaceHighway(travelTime, getStarSystem(rampShortcut), getStarSystem(exitShortcut));
     }
 
     private void populateUniverse() {

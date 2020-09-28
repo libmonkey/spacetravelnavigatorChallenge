@@ -7,6 +7,6 @@ public class SpaceTravelingNavigator {
         Universe universe = new Universe();
         universe.createDummyUniverse();
 
-        System.out.println("Entfernung Test: " +  universe.getTravelTimeOfRoute(new StarSystem[]{universe.getStarSystem("A"), universe.getStarSystem("B")}));
+        System.out.println("Entfernung Test: " +  universe.getDistanceOfRoute(new StarSystem[]{universe.getStarSystem("A"), universe.getStarSystem("B")}));
     }
 }
