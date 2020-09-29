@@ -6,7 +6,7 @@ The first five exercises specifies routes between stars and want the distance.
 All other exercises have different problems.
 
 ## Project structure
-The project contains two folders, test and source.
+The project contains two folders, test and main.
 Test bundles all exercises of the challenge. 
 The implementation of the world can be found inside main.  
 
