@@ -19,7 +19,7 @@ public class Universe {
      * @return true if new StarSystem was successfully added
      */
     private boolean addStarSystem(StarSystem system) {
-        if(getStarSystem(system.getShortcut()) != null) {
+        if(starSystems.contains(system)) {
             return false;
         }
         starSystems.add(system);
