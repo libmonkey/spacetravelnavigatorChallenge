@@ -40,16 +40,24 @@ public class StarRoute {
      * @param point traveled Highway
      */
     public void addRoutePoint(SpaceHighway point) {
-        addTravelPoint();
-        routePoints[travelPoint] =  point;
+        try {
+            addTravelPoint();
+            routePoints[travelPoint] =  point;
+        } catch (Exception e) {
+            printErrorExitProgram(e.getMessage());
+        }
     }
 
     /**
      * Remove the last added highway from StarRoute.
      */
     public void removeLastRoutePoint() {
-        routePoints[travelPoint] = null;
-        removeTravelPoint();
+        try {
+            routePoints[travelPoint] = null;
+            removeTravelPoint();
+        } catch (Exception e) {
+            printErrorExitProgram(e.getMessage());
+        }
     }
 
     /**
@@ -105,7 +113,7 @@ public class StarRoute {
     public StarSystem[] getTraveledSystems() {
         StarSystem[] traveledSystems = new StarSystem[travelPoint + 2];
         traveledSystems[0] = firstSystem;
-        for(Integer i = 0; i < travelPoint + 1; i++){
+        for(int i = 0; i < travelPoint + 1; i++){
             traveledSystems[i+1] = routePoints[i].getExit();
         }
         return traveledSystems;
@@ -161,5 +169,10 @@ public class StarRoute {
     private void removeTravelPoint() {
         if (travelPoint > 0) travelPoint--;
         else throw new ArrayIndexOutOfBoundsException("No star systems as route points");
+    }
+
+    private void printErrorExitProgram(String errorMessage) {
+        System.err.println(errorMessage);
+        System.exit(1);
     }
 }
