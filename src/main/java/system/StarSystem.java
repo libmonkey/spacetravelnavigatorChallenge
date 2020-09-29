@@ -1,6 +1,7 @@
 package system;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -45,11 +46,11 @@ public class StarSystem {
     }
 
     public List<SpaceHighway> getRamps() {
-        return ramps;
+        return Collections.unmodifiableList(ramps);
     }
 
     public List<SpaceHighway> getExits() {
-        return exits;
+        return Collections.unmodifiableList(exits);
     }
 
     @Override
